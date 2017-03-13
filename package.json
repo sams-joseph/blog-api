@@ -1,0 +1,33 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "Blog about javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon bin/dev",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && mkdir dist && babel server -s -d dist",
+    "production": "npm run build && nodemon bin/production"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "Joseph Sams",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "express-validator": "^3.1.2",
+    "mongoose": "^4.8.6"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-2": "^6.22.0",
+    "babel-register": "^6.23.0",
+    "dotenv": "^4.0.0",
+    "nodemon": "^1.11.0"
+  }
+}
