@@ -5,7 +5,7 @@ import expressValidator from 'express-validator';
 
 import routes from './routes';
 
-mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@ds129050.mlab.com:29050/blog`, () => {
+mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_ADDRESS}`, () => {
   console.log('Connected to mongodb...');
 });
 
