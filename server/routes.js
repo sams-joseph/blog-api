@@ -23,6 +23,7 @@ routes.post('/subscribe', subscriberController.post);
 // Post routes
 routes.post('/post', postController.post);
 routes.get('/posts', postController.getAll);
+routes.get('/post/:_id', postController.getPostById);
 routes.get('/posts/:_categoryId', postController.getByCategory);
 
 // Comment routes

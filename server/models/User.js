@@ -17,7 +17,7 @@ const userSchema = new Schema({
   email: {
     type: String,
     required: true,
-    minlength: [5, 'Username must be 5 characters or more.'],
+    minlength: [6, 'Email must be 6 characters or more.'],
   },
   password: {
     type: String,
@@ -28,16 +28,27 @@ const userSchema = new Schema({
   isDeleted: { type: Boolean, default: false },
 });
 
-userSchema.methods.createUser = function(newUser) {
+userSchema.methods.createUser = function() {
   return new Promise((resolve, reject) => {
     bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-            newUser.password = hash;
-            newUser.save(resolve(newUser));
-        });
+      bcrypt.hash(this.password, salt, (err, hash) => {
+        if(err) reject(err);
+        this.password = hash;
+        this.save(resolve(this));
+      });
     });
   });
 };
+
+userSchema.methods.loginUser = function(candidatePassword) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(candidatePassword, this.password).then((res) => {
+      if(!res) reject('Pasword invalid');
+      resolve(res);
+    });
+  });
+};
+
 
 const User = mongoose.model('User', userSchema);
 export default User;

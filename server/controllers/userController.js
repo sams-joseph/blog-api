@@ -28,7 +28,7 @@ userController.post = (req, res) => {
       password
     });
 
-    user.createUser(user)
+    user.createUser()
       .then((newUser) => {
         res.status(200).json({
             success: true,
@@ -46,24 +46,35 @@ userController.post = (req, res) => {
 userController.login = (req, res) => {
   const { email, password } = req.body;
 
-  db.User.findOne({ email: email }).then((user) => {
-    bcrypt.compare(password, user.password).then((valid) => {
-      if(valid) {
+  // Validation
+  req.checkBody('email', 'Email is required').notEmpty();
+  req.checkBody('email', 'Email is not valid').isEmail();
+  req.checkBody('password', 'Password is required').notEmpty();
+
+  const errors = req.validationErrors();
+
+  if(errors) {
+    res.status(500).json({
+      message: errors,
+    });
+  } else {
+    db.User.findOne({ email: email }).then((user) => {
+      user.loginUser(password).then((results) => {
         res.status(200).json({
           success: true,
           loggedIn: true,
         });
-      }
+      }).catch((err) => {
+        res.status(500).json({
+          message: err,
+        });
+      });
     }).catch((err) => {
       res.status(500).json({
         message: err,
       });
     });
-  }).catch((err) => {
-    res.status(500).json({
-      message: err,
-    });
-  });
+  }
 }
 
 export default userController;
